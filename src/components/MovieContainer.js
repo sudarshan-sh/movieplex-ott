@@ -1,15 +1,12 @@
 import React, { useEffect, useState } from "react";
 import MovieCard from "./MovieCard";
 
-// const todayTrending =
-//   "https://api.themoviedb.org/3/movie/top_rated?api_key=e2d948b748bca3d1d70b7f539fa4d559&page=1";
-
-const MovieContainer = ({ selectedGenre }) => {
-  console.log(selectedGenre);
+const MovieContainer = ({ selectedGenre, searchQuery }) => {
   const [todayTrending, setTodayTrending] = useState([]);
   const [upcoming, setUpcoming] = useState([]);
   const [thisWeek, setThisWeek] = useState([]);
   const [genreMovies, setGenreMovies] = useState([]);
+  const [searchedMovies, setSearchedMovies] = useState([]);
 
   // For TODAY TRENDING MOVIES
   const fetchTodaysMovies = async () => {
@@ -76,8 +73,7 @@ const MovieContainer = ({ selectedGenre }) => {
     fetchThisWeekTrendingMovies();
   }, []);
 
-  // eslint-disable-next-line react-hooks/exhaustive-deps
-  const selectMovieGenre = async () => {
+  const handleMovieGenre = async (ID) => {
     const options = {
       method: "GET",
       headers: {
@@ -88,7 +84,7 @@ const MovieContainer = ({ selectedGenre }) => {
     };
 
     fetch(
-      `https://api.themoviedb.org/3/discover/movie?include_adult=false&include_video=false&language=en-US&page=1&sort_by=popularity.desc&with_genres=${selectedGenre}`,
+      `https://api.themoviedb.org/3/discover/movie?include_adult=false&include_video=false&language=en-US&page=1&sort_by=popularity.desc&with_genres=${ID}`,
 
       options
     )
@@ -97,15 +93,38 @@ const MovieContainer = ({ selectedGenre }) => {
       .catch((err) => console.error(err));
   };
 
+  const fetchSearchMovies = async (query) => {
+    const options = {
+      method: "GET",
+      headers: {
+        accept: "application/json",
+        Authorization:
+          "Bearer eyJhbGciOiJIUzI1NiJ9.eyJhdWQiOiI5NGM0NGQ3ZGQxMzkwMDQwNGM4NWYxMjk3MzRhZjBkZiIsInN1YiI6IjY1NjlkZTBmY2Y0OGExMDExZTI2YTJjMCIsInNjb3BlcyI6WyJhcGlfcmVhZCJdLCJ2ZXJzaW9uIjoxfQ.AGuD0LYD3AiCmMGyA5Q5UX7J4A6K-UvPy6Ee2CL5POs",
+      },
+    };
+
+    fetch(
+      `https://api.themoviedb.org/3/search/movie?api_key=e2d948b748bca3d1d70b7f539fa4d559&query=${query}&page=1&include_adult=false&page=1`,
+      options
+    )
+      .then((response) => response.json())
+      .then((response) => setSearchedMovies(response.results))
+      .catch((err) => console.error(err));
+  };
+
   useEffect(() => {
-    selectMovieGenre();
-  }, [selectMovieGenre, selectedGenre]);
+    if (selectedGenre) {
+      handleMovieGenre(selectedGenre.id);
+    } else if (searchQuery) {
+      fetchSearchMovies(searchQuery);
+    }
+  }, [selectedGenre, searchQuery]);
 
   return (
     <>
       <article className="container" style={{ padding: "24px 50px 48px" }}>
         {/* MOVIE LIST */}
-        {selectedGenre === null ? (
+        {selectedGenre === null && searchQuery === "" ? (
           <>
             <section className="movie-list">
               <div className="title-wrapper">
@@ -144,10 +163,25 @@ const MovieContainer = ({ selectedGenre }) => {
               </div>
             </section>
           </>
+        ) : searchQuery !== "" ? (
+          <section className="movie-list">
+            <div className="title-wrapper">
+              <h3 className="title-large">
+                Total Results: {searchedMovies.length}
+              </h3>
+            </div>
+            <div className="slider-list">
+              <div className="slider-inner">
+                {searchedMovies.map((movie, index) => {
+                  return <MovieCard key={movie.id} {...movie} />;
+                })}
+              </div>
+            </div>
+          </section>
         ) : (
           <section className="movie-list">
             <div className="title-wrapper">
-              <h3 className="title-large">All {selectedGenre} Movies</h3>
+              <h3 className="title-large">All {selectedGenre.name} Movies</h3>
             </div>
             <div className="slider-list">
               <div className="slider-inner">

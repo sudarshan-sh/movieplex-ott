@@ -8,16 +8,8 @@ import menuCloseIcon from "../images/menu-close.png";
 import Sidebar from "./Sidebar";
 import MovieContainer from "./MovieContainer";
 
-const Navbar = () => {
+const Navbar = ({ onHandleSearch, searchQuery }) => {
   const [isSidebarOpen, setIsSidebarOpen] = useState(false);
-
-  // if(isLoading){
-  //   return (
-  //     <main>
-  //       <img src={loadingImage} alt="loadingImg" />
-  //     </main>
-  //   )
-  // }
 
   return (
     <>
@@ -35,8 +27,10 @@ const Navbar = () => {
             <input
               type="text"
               name="search"
+              value={searchQuery}
               placeholder="Search any movies..."
               className="search-field"
+              onChange={(e) => onHandleSearch(e.target.value)}
             />
             <img
               src={searchIcon}

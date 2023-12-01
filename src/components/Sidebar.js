@@ -49,7 +49,7 @@ const Sidebar = ({ onSelectGenre }) => {
                   >
                     <button
                       className="sidebar-link"
-                      onClick={() => onSelectGenre(genre.id)}
+                      onClick={() => onSelectGenre(genre)}
                     >
                       {genre.name}
                     </button>

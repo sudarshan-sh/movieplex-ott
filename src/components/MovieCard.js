@@ -3,7 +3,6 @@ import starImg from "../images/star.png";
 const imageBaseUrl = "https://image.tmdb.org/t/p/";
 
 const MovieCard = (props) => {
-  // console.log(props);
   const { poster_path, title, vote_average, release_date, id } = props;
   return (
     <div className="movie-card">
