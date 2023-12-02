@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
 
-const Sidebar = ({ onSelectGenre }) => {
+const Sidebar = ({ onSelectGenre, isSidebarOpen }) => {
   const [genres, setGenres] = useState([]);
 
   const fetchGenres = async () => {
@@ -26,7 +26,7 @@ const Sidebar = ({ onSelectGenre }) => {
   return (
     <>
       {/* SIDEBAR */}
-      <nav className="sidebar">
+      <nav className={`sidebar ${isSidebarOpen ? "open" : ""}`}>
         <div className="sidebar-inner" style={{ width: "85%" }}>
           <div className="sidebar-list">
             <p className="title">Genre</p>

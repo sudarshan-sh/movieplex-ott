@@ -7,6 +7,7 @@ const MovieContainer = ({ selectedGenre, searchQuery }) => {
   const [thisWeek, setThisWeek] = useState([]);
   const [genreMovies, setGenreMovies] = useState([]);
   const [searchedMovies, setSearchedMovies] = useState([]);
+  const [totalPages, setTotalPages] = useState(0);
 
   // For TODAY TRENDING MOVIES
   const fetchTodaysMovies = async () => {
@@ -108,7 +109,10 @@ const MovieContainer = ({ selectedGenre, searchQuery }) => {
       options
     )
       .then((response) => response.json())
-      .then((response) => setSearchedMovies(response.results))
+      .then((response) => {
+        setSearchedMovies(response.results);
+        setTotalPages(response.total_pages);
+      })
       .catch((err) => console.error(err));
   };
 
@@ -166,9 +170,7 @@ const MovieContainer = ({ selectedGenre, searchQuery }) => {
         ) : searchQuery !== "" ? (
           <section className="movie-list">
             <div className="title-wrapper">
-              <h3 className="title-large">
-                Total Results: {searchedMovies.length}
-              </h3>
+              <h3 className="title-large">Movies with: {totalPages}</h3>
             </div>
             <div className="slider-list">
               <div className="slider-inner">

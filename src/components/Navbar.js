@@ -8,8 +8,14 @@ import menuCloseIcon from "../images/menu-close.png";
 import Sidebar from "./Sidebar";
 import MovieContainer from "./MovieContainer";
 
-const Navbar = ({ onHandleSearch, searchQuery }) => {
-  const [isSidebarOpen, setIsSidebarOpen] = useState(false);
+const Navbar = ({
+  onHandleSearch,
+  searchQuery,
+  onToggle,
+  isSidebarOpen,
+  onClose,
+}) => {
+  // const [isSidebarOpen, setIsSidebarOpen] = useState(false);
 
   return (
     <>
@@ -59,18 +65,8 @@ const Navbar = ({ onHandleSearch, searchQuery }) => {
             alt="open search box"
           />
         </button> */}
-        <button className="menu-btn">
-          {!isSidebarOpen ? (
-            <img
-              src={menuIcon}
-              style={{
-                width: "24px",
-                height: "24px",
-              }}
-              alt="open menu"
-              className="menu"
-            />
-          ) : (
+        {isSidebarOpen ? (
+          <button className="menu-btn" onClick={onClose}>
             <img
               src={menuCloseIcon}
               style={{
@@ -80,8 +76,20 @@ const Navbar = ({ onHandleSearch, searchQuery }) => {
               alt="close menu"
               className="close"
             />
-          )}
-        </button>
+          </button>
+        ) : (
+          <button className="menu-btn" onClick={onToggle}>
+            <img
+              src={menuIcon}
+              style={{
+                width: "24px",
+                height: "24px",
+              }}
+              alt="open menu"
+              className="menu"
+            />
+          </button>
+        )}
       </header>
     </>
   );

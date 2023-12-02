@@ -261,12 +261,6 @@ button {
   font: inherit;
   color: inherit;
 }
-@media (min-width: 1200px) {
-  .menu-btn,
-  .overlay {
-    display: none;
-  }
-}
 
 /* SIDEBAR */
 .sidebar {
@@ -292,6 +286,12 @@ button {
     height: calc(100vh - 104px);
   }
 }
+
+/*  */
+.sidebar.open {
+  left: 0;
+}
+
 .sidebar-inner {
   display: grid;
   gap: 20px;
